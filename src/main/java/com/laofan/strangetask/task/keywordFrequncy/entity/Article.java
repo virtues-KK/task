@@ -1,8 +1,13 @@
 package com.laofan.strangetask.task.keywordFrequncy.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -19,6 +24,7 @@ import java.util.List;
 @Table(name = "article")
 @ToString(
         exclude = {"id"})
+@EntityListeners(value = AuditingEntityListener.class)
 public class Article {
 
     @Id
@@ -29,13 +35,16 @@ public class Article {
     private String name;
 
     @Column(name = "createTime")
-    private String createDate;
+    @Type(type = "java.time.LocalDateTime")
+    @CreatedDate
+    private LocalDateTime createDate;
+
+    @LastModifiedDate
+    @Type(type = "java.time.LocalDateTime")
+    private LocalDateTime lastModifyTime;
 
     @ManyToOne
     @JoinColumn(name = "userId")
     private User createUser;
-
-    @ManyToMany(mappedBy = "articles")
-    private List<Frequency> frequencies;
 
 }

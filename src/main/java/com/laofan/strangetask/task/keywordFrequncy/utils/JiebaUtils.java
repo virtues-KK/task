@@ -20,8 +20,8 @@ public class JiebaUtils {
 
     static List<String> collect = new ArrayList<>();
 
-    public static List<String> stringFromPython(String filePath) throws FileNotFoundException {
-        InputStreamReader streamReader = new InputStreamReader(new FileInputStream(new File(filePath)), StandardCharsets.UTF_8);
+    public static List<String> stringFromPython(String filePath) throws Exception {
+        InputStreamReader streamReader = new InputStreamReader(new FileInputStream(new File(filePath)), "GBK");
         BufferedReader bufferedReader = new BufferedReader(streamReader);
         StringBuilder stringBuilder = new StringBuilder();
         for (String s : bufferedReader.lines().collect(Collectors.toList())) {
@@ -39,7 +39,7 @@ public class JiebaUtils {
             e.printStackTrace();
         }
         List<String> list = new ArrayList<>();
-        String[] split = collect.get(1).split(",");
+        String[] split = collect.get(0).split(",");
         Pattern compile = Pattern.compile("\\w+([\\u4E00-\\u9FA5]+|\\d+)");
         for (String s : split) {
             Matcher matcher = compile.matcher(s);
@@ -86,7 +86,7 @@ public class JiebaUtils {
             "这也是一个最坏的时代，坏到下一代的价值观被歪曲到分崩离析。\n" +
             "难以想象，如果孩子们的大脑，长期被奢靡、浮华、及时行乐的思想霸占，他们还有什么未来可言？\n";
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         stringFromPython(string);
     }
 }

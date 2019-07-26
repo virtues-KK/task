@@ -2,12 +2,17 @@ package com.laofan.strangetask.task.keywordFrequncy.service;
 
 import com.laofan.strangetask.task.keywordFrequncy.entity.Article;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Frequency;
+import com.laofan.strangetask.task.keywordFrequncy.entity.Keyword;
+import com.laofan.strangetask.task.keywordFrequncy.repository.ArticleRepository;
 import com.laofan.strangetask.task.keywordFrequncy.repository.FrequencyRepository;
+import com.laofan.strangetask.task.keywordFrequncy.repository.KeywordRepository;
 import com.laofan.strangetask.task.keywordFrequncy.utils.JiebaUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,40 +22,68 @@ import java.util.stream.Collectors;
  * author:pan le
  * Date:2019/7/19
  * Time:11:17
+ * @author sunwukong
  */
+@Slf4j
 @Service
 public class JiebaService {
 
+    private static List<String> keywords;
+
     private final FrequencyRepository frequencyRepository;
 
-    public String basePath = JiebaService.class.getResource("").getPath();
-    static String string = "前不久，朋友因健康问题需住院治疗。陪床期间，我经历了这样一幕：隔壁床病人是一位60多岁的妇女，被推进来的时候，医生嘱咐家属，病人术后身体虚弱，" +
-            "需要静养。陪护她的是女儿和10岁的外孙女，听医嘱的时候，鸡啄米似的点头。可是到了晚上，画风突变。母女竟然一起玩起了直播！手机声音开的巨大，女孩口中念念有词，配合着肢体运动，" +
-            "卖力地表演，妈妈则在一旁帮忙录制，还严格地「提示」女儿，动作怎样更规范、更好看……";
+    private final KeywordRepository keywordRepository;
 
-    public JiebaService(FrequencyRepository frequencyRepository) {
+    private final ArticleRepository articleRepository;
+
+    @Autowired
+    public JiebaService(FrequencyRepository frequencyRepository, KeywordRepository keywordRepository, ArticleRepository articleRepository) {
         this.frequencyRepository = frequencyRepository;
+        this.keywordRepository = keywordRepository;
+        this.articleRepository = articleRepository;
     }
 
-    String fileName = "C:\\Users\\sunwukong\\Desktop\\new 1.txt";
+    private String fileName = "C:\\Users\\sunwukong\\Desktop\\new.txt";
 
-    public void frequency() throws FileNotFoundException, UnsupportedEncodingException {
+    public void frequency(String fileName) throws Exception {
         List<String> list = JiebaUtils.stringFromPython(fileName);
         Map<String, Long> collect = list.stream().distinct().collect(Collectors.toMap(str -> str, s -> list.stream().filter(s::equals).count()));
         List<Frequency> frequencies = new ArrayList<>();
-        Frequency frequency = new Frequency();
-        Article artcle = new Article();
+        //单个只保存一篇文章
+        Article article = Article.builder()
+                .name("孩子才是副作用呢!")
+                .build();
+        //save dir article
+        Article article1 = articleRepository.save(article);
         for (String c : collect.keySet()) {
-            frequency = Frequency.builder()
-                    .keyword(c)
+            // save dir keyword
+            Keyword keyword1;
+            if (!keywords.contains(c)) {
+                Keyword keyword = Keyword.builder()
+                        .name(c)
+                        .build();
+                keyword1 = keywordRepository.save(keyword);
+                keywords.add(c);
+            } else {
+                keyword1 = keywordRepository.findByName(c);
+            }
+            //save frequency
+            Frequency frequency = Frequency.builder()
                     .frequency(collect.get(c))
-                    .articles(null)
+                    .article(article1)
+                    .keyword(keyword1)
                     .build();
             frequencies.add(frequency);
         }
         frequencyRepository.saveAll(frequencies);
-
-
     }
 
+    /**
+     * 准备当前数据
+     */
+    @PostConstruct
+    public void initialization() {
+        keywords = keywordRepository.findAll().stream().map(Keyword::getName).collect(Collectors.toList());
+        log.info("当前的keyword数量为" + keywords.size());
+    }
 }

@@ -12,9 +12,6 @@ import java.util.List;
  * @author sunwukong
  */
 @Entity
-@ToString(
-        exclude = "articles"
-)
 class User {
 
     @Id
@@ -26,7 +23,4 @@ class User {
 
     @Column(name = "password")
     private String password;
-
-    @OneToMany(mappedBy = "createUser")
-    private List<Article> articles;
 }
