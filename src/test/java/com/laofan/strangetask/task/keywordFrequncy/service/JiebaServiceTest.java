@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
 
 
 @SpringBootTest
@@ -16,7 +15,7 @@ public class JiebaServiceTest {
     private JiebaService jiebaService;
 
     @Test
-    public void test1() throws IOException {
+    public void test1() throws Exception {
         jiebaService.frequency();
     }
 }

@@ -33,8 +33,6 @@
             <artifactId>jieba-analysis</artifactId>
             <version>0.0.2</version>
         </dependency>
-
-
         <dependency>
             <groupId>org.python</groupId>
             <artifactId>jython-standalone</artifactId>

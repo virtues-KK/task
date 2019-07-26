@@ -11,6 +11,7 @@ import java.util.List;
  * author:pan le
  * Date:2019/7/19
  * Time:10:05
+ * @author sunwukong
  */
 @Entity
 @Builder
@@ -22,12 +23,14 @@ public class Frequency {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String keyword;
+    @ManyToOne
+    @JoinColumn(name = "keywordId")
+    private Keyword keyword;
+
+    @ManyToOne
+    @JoinColumn(name = "articleId")
+    private Article article;
 
     private Long frequency;
-
-    @Column(name = "articleId")
-    @ManyToMany
-    private List<Article> articles;
 
 }

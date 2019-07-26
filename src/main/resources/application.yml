@@ -6,3 +6,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+  data:
+    jdbc:
+      repositories:
+        enabled: true
