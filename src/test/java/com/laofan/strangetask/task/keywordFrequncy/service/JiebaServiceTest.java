@@ -16,6 +16,6 @@ public class JiebaServiceTest {
 
     @Test
     public void test1() throws Exception {
-        jiebaService.frequency();
+//        jiebaService.frequency();
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  * Time:11:17
  * @author sunwukong
  */
+
 @Slf4j
 @Service
 public class JiebaService {
@@ -43,15 +44,22 @@ public class JiebaService {
         this.articleRepository = articleRepository;
     }
 
-    private String fileName = "C:\\Users\\sunwukong\\Desktop\\new.txt";
 
-    public void frequency(String fileName) throws Exception {
+    public void frequency(String filePath) throws Exception {
+        File[] files = new File(filePath).listFiles();
+        for (File file : files) {
+            this.save(file.getName());
+        }
+    }
+
+
+    public void save(String fileName) throws Exception {
         List<String> list = JiebaUtils.stringFromPython(fileName);
         Map<String, Long> collect = list.stream().distinct().collect(Collectors.toMap(str -> str, s -> list.stream().filter(s::equals).count()));
         List<Frequency> frequencies = new ArrayList<>();
         //单个只保存一篇文章
         Article article = Article.builder()
-                .name("孩子才是副作用呢!")
+                .name("孩子只是副作用呢!")
                 .build();
         //save dir article
         Article article1 = articleRepository.save(article);

@@ -27,7 +27,7 @@ public class JiebaUtils {
         for (String s : bufferedReader.lines().collect(Collectors.toList())) {
             stringBuilder = stringBuilder.append(s);
         }
-        String[] strings = new String[]{"python", "D:\\task\\src\\main\\java\\com\\laofan\\strangetask\\task\\keywordFrequncy\\service\\JiebaTest.py", stringBuilder.toString()};
+        String[] strings = new String[]{"python", "/Users/vourtous/Desktop/task/src/main/java/com/laofan/strangetask/task/keywordFrequncy/service/JiebaTest.py", stringBuilder.toString()};
         try {
             Process process = Runtime.getRuntime().exec(strings);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "GBK"));
