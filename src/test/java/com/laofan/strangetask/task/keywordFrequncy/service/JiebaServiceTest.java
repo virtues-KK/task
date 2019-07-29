@@ -16,6 +16,6 @@ public class JiebaServiceTest {
 
     @Test
     public void test1() throws Exception {
-//        jiebaService.frequency();
+        jiebaService.frequency("C:\\Users\\sunwukong\\Desktop\\测试if_idf");
     }
 }

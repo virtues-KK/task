@@ -45,5 +45,5 @@ def function(String):
     return l
 
 
-function(data)
-# function(sys.argv[1])
+# function(data)
+function(sys.argv[1])

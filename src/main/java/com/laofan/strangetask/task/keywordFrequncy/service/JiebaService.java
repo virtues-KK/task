@@ -48,13 +48,13 @@ public class JiebaService {
     public void frequency(String filePath) throws Exception {
         File[] files = new File(filePath).listFiles();
         for (File file : files) {
-            this.save(file.getName());
+            this.save(file);
         }
     }
 
 
-    public void save(String fileName) throws Exception {
-        List<String> list = JiebaUtils.stringFromPython(fileName);
+    public void save(File file) throws Exception {
+        List<String> list = JiebaUtils.stringFromPython(file);
         Map<String, Long> collect = list.stream().distinct().collect(Collectors.toMap(str -> str, s -> list.stream().filter(s::equals).count()));
         List<Frequency> frequencies = new ArrayList<>();
         //单个只保存一篇文章

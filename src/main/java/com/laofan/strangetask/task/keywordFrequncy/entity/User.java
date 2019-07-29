@@ -1,9 +1,12 @@
 package com.laofan.strangetask.task.keywordFrequncy.entity;
 
-import lombok.ToString;
+import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * author:pan le
@@ -12,6 +15,8 @@ import java.util.List;
  * @author sunwukong
  */
 @Entity
+@EnableJpaAuditing
+@EntityListeners(value = AuditingEntityListener.class)
 class User {
 
     @Id
@@ -23,4 +28,8 @@ class User {
 
     @Column(name = "password")
     private String password;
+
+    @CreatedDate
+    @Type(type = "java.time.LocalDateTime")
+    private LocalDateTime createTime;
 }

@@ -20,8 +20,8 @@ public class JiebaUtils {
 
     static List<String> collect = new ArrayList<>();
 
-    public static List<String> stringFromPython(String filePath) throws Exception {
-        InputStreamReader streamReader = new InputStreamReader(new FileInputStream(new File(filePath)), "GBK");
+    public static List<String> stringFromPython(File file) throws Exception {
+        InputStreamReader streamReader = new InputStreamReader(new FileInputStream(file), "GBK");
         BufferedReader bufferedReader = new BufferedReader(streamReader);
         StringBuilder stringBuilder = new StringBuilder();
         for (String s : bufferedReader.lines().collect(Collectors.toList())) {
@@ -87,6 +87,6 @@ public class JiebaUtils {
             "难以想象，如果孩子们的大脑，长期被奢靡、浮华、及时行乐的思想霸占，他们还有什么未来可言？\n";
 
     public static void main(String[] args) throws Exception {
-        stringFromPython(string);
+//        stringFromPython(string);
     }
 }
