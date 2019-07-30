@@ -32,7 +32,7 @@ public class JiebaUtils {
             Process process = Runtime.getRuntime().exec(strings);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "GBK"));
             collect = reader.lines().collect(Collectors.toList());
-            log.info(collect.size() + "");
+//            log.info(collect.size() + "");
             reader.close();
             process.waitFor();
         } catch (Exception e) {
@@ -87,6 +87,6 @@ public class JiebaUtils {
             "难以想象，如果孩子们的大脑，长期被奢靡、浮华、及时行乐的思想霸占，他们还有什么未来可言？\n";
 
     public static void main(String[] args) throws Exception {
-//        stringFromPython(string);
+//
     }
 }
