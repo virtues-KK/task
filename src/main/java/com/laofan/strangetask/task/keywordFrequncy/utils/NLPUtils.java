@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,9 +28,8 @@ import java.util.stream.Collectors;
  */
 public class NLPUtils {
 
-    public static List<String> keywords(String filesPath) throws Exception{
-        File[] files = new File(filesPath).listFiles();
-        for (File file : files) {
+    public static List<String> keywords(File file) throws Exception{
+        List<String> list = new ArrayList<>();
             String content;
             InputStreamReader streamReader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
             BufferedReader bufferedReader = new BufferedReader(streamReader);
@@ -40,11 +40,10 @@ public class NLPUtils {
             content = stringBuilder.toString();
             for (int i = 0 ; i < content.length()/300 ; i ++){
                 String substring = content.substring(i * 300, (i + 1) * 300);
-                aliyunnlp(substring);
+                String aliyunnlp = aliyunnlp(substring);
+                list.add(aliyunnlp);
             }
-
-        }
-        return null;
+        return list;
     }
 
     static String aliyunnlp(String content){

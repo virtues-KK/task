@@ -9,10 +9,22 @@ import com.aliyuncs.http.FormatType;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import com.laofan.strangetask.task.keywordFrequncy.entity.Article;
+import com.laofan.strangetask.task.keywordFrequncy.entity.Frequency;
+import com.laofan.strangetask.task.keywordFrequncy.entity.Keyword;
+import com.laofan.strangetask.task.keywordFrequncy.repository.ArticleKeywordRepository;
+import com.laofan.strangetask.task.keywordFrequncy.repository.ArticleRepository;
+import com.laofan.strangetask.task.keywordFrequncy.repository.FrequencyRepository;
+import com.laofan.strangetask.task.keywordFrequncy.repository.KeywordRepository;
+import com.laofan.strangetask.task.keywordFrequncy.utils.NLPUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,53 +32,59 @@ import java.util.stream.Collectors;
  * author:pan le
  * Date:2019/7/31
  * Time:9:58
+ * 使用阿里云nlp 标注词性并保存
  */
 @Service
 public class AliYunNLP {
-    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-//        File file = new File("C:\\Users\\sunwukong\\Desktop\\new1.txt");
-//        InputStreamReader streamReader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-//        BufferedReader bufferedReader = new BufferedReader(streamReader);
-//        StringBuilder stringBuilder = new StringBuilder();
-//        for (String s : bufferedReader.lines().collect(Collectors.toList())) {
-//            stringBuilder = stringBuilder.append(s);
-//        }
-//        //每次调用只使用其中的1024个字节数大小的文件
-//        String s1 = stringBuilder.toString();
-//        int length = s1.length();
-//        for (int i = 0; i < length / 300; i++) {
-//            String substring = s1.substring(i * 300, (i + 1) * 300);
-//
-//
-//            String accessKeyId = "LTAIJLJesqvyXNfn";
-//            String accessKeySecret = "GVkfmSYNKA7zF5yapWexWcmtIkCcRY";
-//            try {
-//                DefaultProfile.addEndpoint("cn-shanghai", "cn-shanghai", "Nlp", "nlp.cn-shanghai.aliyuncs.com");
-//                IClientProfile profile = DefaultProfile.getProfile("cn-shanghai", accessKeyId, accessKeySecret);
-//                IAcsClient client = new DefaultAcsClient(profile);
-//                String s = stringBuilder.toString();
-//                String postBody = "{\n"
-//                        + "  \"text\": \"" + substring + "\",\n"
-//                        + "  \"lang\": \"ZH\"\n" + "}";
-//                CommonRequest request = new CommonRequest();
-//                // 必须设置domain
-//                request.setDomain("nlp.cn-shanghai.aliyuncs.com");
-//                // 设置所要请求的API路径
-//                request.setUriPattern("/nlp/api/wordpos/general");
-//                // 设置请求方式，目前只支持POST
-//                request.setMethod(MethodType.POST);
-//                // 设置请求内容以及格式
-//                request.setHttpContent(postBody.getBytes(), "utf-8", FormatType.JSON);
-//                request.putHeadParameter("x-acs-signature-method", "HMAC-SHA1");
-//                // 设置请求唯一码，防止网络重放攻击
-//                request.putHeadParameter("x-acs-signature-nonce", UUID.randomUUID().toString());
-//                request.setVersion("2018-04-08");
-//                // 请求并获取结果
-//                CommonResponse response = client.getCommonResponse(request);
-//                System.out.println(response.getData());
-//            } catch (ClientException e) {
-//                e.printStackTrace();
-//            }
-//        }
+
+    private final ArticleKeywordRepository articleKeywordRepository;
+
+    private final ArticleRepository articleRepository;
+
+    private static List<String> keywords;
+
+    private final FrequencyRepository frequencyRepository;
+
+    private final KeywordRepository keywordRepository;
+
+    public AliYunNLP(ArticleKeywordRepository articleKeywordRepository, ArticleRepository articleRepository, FrequencyRepository frequencyRepository, KeywordRepository keywordRepository) {
+        this.articleKeywordRepository = articleKeywordRepository;
+        this.articleRepository = articleRepository;
+        this.frequencyRepository = frequencyRepository;
+        this.keywordRepository = keywordRepository;
+    }
+
+    public void analysisArticle(String filepath) throws Exception{
+        for (File file : new File(filepath).listFiles()) {
+            List<Frequency> frequencies  = new ArrayList<>();
+            List<String> list = NLPUtils.keywords(file);
+            Map<String, Long> collect = list.stream().distinct().collect(Collectors.toMap(str -> str, s -> list.stream().filter(s::equals).count()));
+            Article article = Article.builder()
+                    .name("孩子只是副作用呢!")
+                    .build();
+            //save dir article
+            Article article1 = articleRepository.save(article);
+            for (String c : collect.keySet()) {
+                // save dir keyword
+                Keyword keyword1;
+                if (!keywords.contains(c)) {
+                    Keyword keyword = Keyword.builder()
+                            .name(c)
+                            .build();
+                    keyword1 = keywordRepository.save(keyword);
+                    keywords.add(c);
+                } else {
+                    keyword1 = keywordRepository.findByName(c);
+                }
+                //save frequency
+                Frequency frequency = Frequency.builder()
+                        .frequency(collect.get(c))
+                        .article(article1)
+                        .keyword(keyword1)
+                        .build();
+                frequencies.add(frequency);
+            }
+            frequencyRepository.saveAll(frequencies);
+        }
     }
 }

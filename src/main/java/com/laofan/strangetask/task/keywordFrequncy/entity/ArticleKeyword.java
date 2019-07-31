@@ -14,7 +14,7 @@ import javax.sound.midi.MidiFileFormat;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArtcleKeyword {
+public class ArticleKeyword {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

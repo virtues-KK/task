@@ -1,7 +1,7 @@
 package com.laofan.strangetask.task.keywordFrequncy.service;
 
 import com.huaban.analysis.jieba.JiebaSegmenter;
-import com.laofan.strangetask.task.keywordFrequncy.entity.ArtcleKeyword;
+import com.laofan.strangetask.task.keywordFrequncy.entity.ArticleKeyword;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Frequency;
 import com.laofan.strangetask.task.keywordFrequncy.repository.ArticleKeywordRepository;
 import com.laofan.strangetask.task.keywordFrequncy.repository.ArticleRepository;
@@ -67,7 +67,7 @@ public class TfidfService {
         int i = 0;
         while (iterator.hasNext() && i < 4) {
             Map.Entry<Long, Double> next = (Map.Entry<Long, Double>) iterator.next();
-            articleKeywordRepository.save(ArtcleKeyword.builder()
+            articleKeywordRepository.save(ArticleKeyword.builder()
                     .articleId(articleId)
                     .keywordId(next.getKey())
                     .tf_idf(next.getValue())
