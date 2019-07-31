@@ -29,9 +29,9 @@ string = "前不久，朋友因健康问题需住院治疗。床期间，我经�
 "这也是一个最坏的时代，坏到下一代的价值观被歪曲到分崩离析。" \
 "难以想象，如果孩子们的大脑，长期被奢靡、浮华、及时行乐的思想霸占，他们还有什么未来可言？"
 
-# file_object = open("C:\Users\sunwukong\Desktop\new 1.txt","r")
+# file_object = open("C:\Users\sunwukong\Desktop\测试if_idf\new.txt","r")
 # file_content = file_object.read()
-with open('C:\\Users\\sunwukong\\Desktop\\new.txt', 'r')as f:
+with open('C:\\Users\\sunwukong\\Desktop\\new1.txt', 'r')as f:
     data = f.read()
 
 
@@ -45,5 +45,5 @@ def function(String):
     return l
 
 
-# function(data)
-function(sys.argv[1])
+function(data)
+# function(sys.argv[1])

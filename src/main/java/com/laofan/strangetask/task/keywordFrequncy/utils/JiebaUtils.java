@@ -32,7 +32,7 @@ public class JiebaUtils {
             Process process = Runtime.getRuntime().exec(strings);
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "GBK"));
             collect = reader.lines().collect(Collectors.toList());
-//            log.info(collect.size() + "");
+            log.info(collect.size() + "");
             reader.close();
             process.waitFor();
         } catch (Exception e) {
