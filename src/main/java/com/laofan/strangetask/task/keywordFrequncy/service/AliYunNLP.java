@@ -1,14 +1,5 @@
 package com.laofan.strangetask.task.keywordFrequncy.service;
 
-import com.aliyuncs.CommonRequest;
-import com.aliyuncs.CommonResponse;
-import com.aliyuncs.DefaultAcsClient;
-import com.aliyuncs.IAcsClient;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.http.FormatType;
-import com.aliyuncs.http.MethodType;
-import com.aliyuncs.profile.DefaultProfile;
-import com.aliyuncs.profile.IClientProfile;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Article;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Frequency;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Keyword;
@@ -16,16 +7,14 @@ import com.laofan.strangetask.task.keywordFrequncy.repository.ArticleKeywordRepo
 import com.laofan.strangetask.task.keywordFrequncy.repository.ArticleRepository;
 import com.laofan.strangetask.task.keywordFrequncy.repository.FrequencyRepository;
 import com.laofan.strangetask.task.keywordFrequncy.repository.KeywordRepository;
+import com.laofan.strangetask.task.keywordFrequncy.utils.FileCharsetConverter;
 import com.laofan.strangetask.task.keywordFrequncy.utils.NLPUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -55,24 +44,36 @@ public class AliYunNLP {
     }
 
     public void analysisArticle(String filepath) throws Exception{
-        for (File file : new File(filepath).listFiles()) {
+        File[] files = new File(filepath).listFiles();
+        assert files != null;
+        assert files.length != 0;
+        for (File file : files) {
+            //转换编码
+//            FileCharsetConverter.convert(file,"ISO8859_1","GBK");
+//            FileCharsetConverter.convert(file,"GBK","UTF-8");
+            String articleName = file.getName();
             List<Frequency> frequencies  = new ArrayList<>();
             List<String> list = NLPUtils.keywords(file);
             Map<String, Long> collect = list.stream().distinct().collect(Collectors.toMap(str -> str, s -> list.stream().filter(s::equals).count()));
+            //不重复创建文章以及其他表格数据
+            if (articleRepository.findByName(articleName).isPresent()){
+                return;
+            }
             Article article = Article.builder()
-                    .name("孩子只是副作用呢!")
+                    .name(articleName)
                     .build();
             //save dir article
             Article article1 = articleRepository.save(article);
+            keywords = keywordRepository.findAll().stream().map(Keyword::getName).collect(Collectors.toList());
             for (String c : collect.keySet()) {
                 // save dir keyword
                 Keyword keyword1;
-                if (!keywords.contains(c)) {
+                if (!AliYunNLP.keywords.contains(c)) {
                     Keyword keyword = Keyword.builder()
                             .name(c)
                             .build();
                     keyword1 = keywordRepository.save(keyword);
-                    keywords.add(c);
+                    AliYunNLP.keywords.add(c);
                 } else {
                     keyword1 = keywordRepository.findByName(c);
                 }

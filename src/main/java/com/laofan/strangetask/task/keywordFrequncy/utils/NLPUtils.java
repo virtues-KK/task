@@ -9,11 +9,18 @@ import com.aliyuncs.http.FormatType;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.POIXMLDocument;
+import org.apache.poi.hwpf.extractor.WordExtractor;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +33,26 @@ import java.util.stream.Collectors;
  * Time:10:55
  * 阿里云词性注解
  */
+@Slf4j
 public class NLPUtils {
 
     public static List<String> keywords(File file) throws Exception{
         List<String> list = new ArrayList<>();
             String content;
-            InputStreamReader streamReader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
-            BufferedReader bufferedReader = new BufferedReader(streamReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            for (String s : bufferedReader.lines().collect(Collectors.toList())) {
-                stringBuilder = stringBuilder.append(s);
-            }
-            content = stringBuilder.toString();
+            content = readFile(file);
             for (int i = 0 ; i < content.length()/300 ; i ++){
                 String substring = content.substring(i * 300, (i + 1) * 300);
-                String aliyunnlp = aliyunnlp(substring);
-                list.add(aliyunnlp);
+                List<String> aliyunnlp = aliyunnlp(substring);
+                list.addAll(aliyunnlp);
             }
         return list;
     }
 
-    static String aliyunnlp(String content){
+
+
+
+
+    static List<String> aliyunnlp(String content) throws Exception{
         String accessKeyId = "LTAIJLJesqvyXNfn";
         String accessKeySecret = "GVkfmSYNKA7zF5yapWexWcmtIkCcRY";
         CommonResponse response = null;
@@ -77,7 +83,44 @@ public class NLPUtils {
             e.printStackTrace();
         }
         String data = response.getData();
-        return data;
+        ObjectMapper objectMapper = new ObjectMapper();
+        onData data1 = objectMapper.readValue(response.getData(), onData.class);
+        List<String> vv = data1.getData().stream().filter(inData -> inData.getPos().equals("VV") || inData.getPos().startsWith("N")).map(inData::getWord).collect(Collectors.toList());
+        return vv;
     }
 
+    private static String readFile(File file) throws Exception{
+        StringBuilder stringBuilder = new StringBuilder();
+        if (file.getName().endsWith(".doc")) {
+            InputStream fis = new FileInputStream(file);
+            WordExtractor wordExtractor = new WordExtractor(fis);
+            for (String s : wordExtractor.getParagraphText()) {
+                stringBuilder.append(s);
+            }
+        }
+        if (file.getName().endsWith(".docx")) {
+            OPCPackage opcPackage = POIXMLDocument.openPackage(file.getPath());
+            XWPFDocument xwpfDocument = new XWPFDocument(opcPackage);
+            for (XWPFParagraph paragraph : xwpfDocument.getParagraphs()) {
+                stringBuilder.append(paragraph.getText());
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+}
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+class inData {
+    private String pos;
+    private String word;
+}
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+class onData{
+    private List<inData> data;
 }

@@ -1,6 +1,6 @@
 package com.laofan.strangetask.task.keywordFrequncy.Controller;
 
-import com.laofan.strangetask.task.keywordFrequncy.service.JiebaService;
+import com.laofan.strangetask.task.keywordFrequncy.service.AliYunNLP;
 import com.laofan.strangetask.task.keywordFrequncy.service.TfidfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("analysis")
 public class AnalysisController {
 
-    private final JiebaService jiebaService;
 
     private final TfidfService tfidfService;
 
+    private final AliYunNLP aliYunNLP;
+
     @Autowired
-    public AnalysisController(JiebaService jiebaService, TfidfService tfidfService) {
-        this.jiebaService = jiebaService;
+    public AnalysisController(TfidfService tfidfService, AliYunNLP aliYunNLP) {
         this.tfidfService = tfidfService;
+        this.aliYunNLP = aliYunNLP;
     }
 
     /**
@@ -35,13 +36,12 @@ public class AnalysisController {
      */
     @GetMapping("analysisArticle")
     public void analysisArticle(String filePath) throws Exception {
-        jiebaService.frequency(filePath);
+        aliYunNLP.analysisArticle(filePath);
     }
 
     /**
      * 获取文章推荐关键字
      */
     public void getIf_IdfKeyword(){
-//        tfidfService
     }
 }

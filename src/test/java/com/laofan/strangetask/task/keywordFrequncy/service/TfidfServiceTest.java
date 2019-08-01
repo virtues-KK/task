@@ -6,16 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
+import static org.junit.Assert.*;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class JiebaServiceTest {
+public class TfidfServiceTest {
+
     @Autowired
-    private JiebaService jiebaService;
+    private TfidfService tfidfService;
 
     @Test
-    public void test1() throws Exception {
-        jiebaService.frequency("C:\\Users\\sunwukong\\Desktop\\测试if_idf");
+    public void tf_idf() {
+        tfidfService.tf_idf(1L);
     }
 }

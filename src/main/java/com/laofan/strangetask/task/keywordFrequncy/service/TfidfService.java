@@ -10,6 +10,7 @@ import com.laofan.strangetask.task.keywordFrequncy.repository.KeywordRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -22,6 +23,7 @@ import java.util.*;
  */
 @Service
 @Slf4j
+@Transactional
 public class TfidfService {
 
     private final FrequencyRepository frequencyRepository;
@@ -64,8 +66,10 @@ public class TfidfService {
         //保存前五的推荐值的keyword
         LinkedHashMap linkedHashMap = this.valueSortMap(map);
         Iterator iterator = linkedHashMap.entrySet().iterator();
+        //每次都会删除相关的数据,新增数据
+        articleKeywordRepository.deleteByArticleId(articleId);
         int i = 0;
-        while (iterator.hasNext() && i < 4) {
+        while (iterator.hasNext() && i < 5) {
             Map.Entry<Long, Double> next = (Map.Entry<Long, Double>) iterator.next();
             articleKeywordRepository.save(ArticleKeyword.builder()
                     .articleId(articleId)
