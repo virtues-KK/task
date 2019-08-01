@@ -30,8 +30,6 @@ public class AliYunNLP {
 
     private final ArticleRepository articleRepository;
 
-    private static List<String> keywords;
-
     private final FrequencyRepository frequencyRepository;
 
     private final KeywordRepository keywordRepository;
@@ -45,6 +43,7 @@ public class AliYunNLP {
 
     public void analysisArticle(String filepath) throws Exception{
         File[] files = new File(filepath).listFiles();
+        List<String> keywords;
         assert files != null;
         assert files.length != 0;
         for (File file : files) {
@@ -57,7 +56,7 @@ public class AliYunNLP {
             Map<String, Long> collect = list.stream().distinct().collect(Collectors.toMap(str -> str, s -> list.stream().filter(s::equals).count()));
             //不重复创建文章以及其他表格数据
             if (articleRepository.findByName(articleName).isPresent()){
-                return;
+                continue;
             }
             Article article = Article.builder()
                     .name(articleName)
@@ -68,12 +67,12 @@ public class AliYunNLP {
             for (String c : collect.keySet()) {
                 // save dir keyword
                 Keyword keyword1;
-                if (!AliYunNLP.keywords.contains(c)) {
+                if (!keywords.contains(c)) {
                     Keyword keyword = Keyword.builder()
                             .name(c)
                             .build();
                     keyword1 = keywordRepository.save(keyword);
-                    AliYunNLP.keywords.add(c);
+                    keywords.add(c);
                 } else {
                     keyword1 = keywordRepository.findByName(c);
                 }
