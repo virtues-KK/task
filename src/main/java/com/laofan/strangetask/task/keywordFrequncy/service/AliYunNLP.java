@@ -15,6 +15,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -67,7 +68,7 @@ public class AliYunNLP {
             for (String c : collect.keySet()) {
                 // save dir keyword
                 Keyword keyword1;
-                if (!keywords.contains(c)) {
+                if (!keywords.contains(c) && Objects.nonNull(c) && !" ".equals(c)) {
                     Keyword keyword = Keyword.builder()
                             .name(c)
                             .build();
