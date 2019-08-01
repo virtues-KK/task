@@ -68,7 +68,7 @@ public class AliYunNLP {
             for (String c : collect.keySet()) {
                 // save dir keyword
                 Keyword keyword1;
-                if (!keywords.contains(c) && Objects.nonNull(c) && !" ".equals(c)) {
+                if (!keywords.contains(c) && Objects.nonNull(c) && !"".equals(c) && !" ".equals(c) ) {
                     Keyword keyword = Keyword.builder()
                             .name(c)
                             .build();
