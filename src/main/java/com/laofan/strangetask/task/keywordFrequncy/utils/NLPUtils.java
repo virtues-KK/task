@@ -42,8 +42,10 @@ public class NLPUtils {
             content = readFile(file);
             for (int i = 0 ; i < content.length()/300 ; i ++){
                 String substring = content.substring(i * 300, (i + 1) * 300);
-                // 替换其中的字符串中的空白字符
-                List<String> aliyunnlp = aliyunnlp(substring.replaceAll("\\s*",""));
+                // 替换其中的字符串中的空白字符和非汉字字符
+                String s = substring.replaceAll("\\s*", "");
+                String s1 = s.replaceAll("\\[u4e00-u9fa5]*", "");
+                List<String> aliyunnlp = aliyunnlp(s1);
                 list.addAll(aliyunnlp);
             }
         return list;

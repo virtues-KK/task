@@ -64,7 +64,7 @@ public class AliYunNLP {
                     .build();
             //save dir article
             Article article1 = articleRepository.save(article);
-            keywords = keywordRepository.findAll().stream().map(Keyword::getName).collect(Collectors.toList());
+            keywords = keywordRepository.findAllName();
             for (String c : collect.keySet()) {
                 // save dir keyword
                 Keyword keyword1;

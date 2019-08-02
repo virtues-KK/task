@@ -36,4 +36,7 @@ public class Frequency {
 
     private Long frequency;
 
+    @Column(columnDefinition = "DOUBLE default 0.00")
+    private double tf_idfValue = 0.00;
+
 }

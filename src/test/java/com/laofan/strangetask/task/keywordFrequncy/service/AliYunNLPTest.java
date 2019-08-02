@@ -17,6 +17,6 @@ public class AliYunNLPTest {
 
     @Test
     public void analysisArticle() throws Exception {
-        aliYunNLP.analysisArticle("C:\\Users\\sunwukong\\Desktop\\testif_idf");
+        aliYunNLP.analysisArticle("/Users/panyue/Desktop/testif_idf");
     }
 }
