@@ -1,12 +1,15 @@
 package com.laofan.strangetask.task.keywordFrequncy.service;
 
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.*;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,7 +26,29 @@ public class OssService {
     private static String objectName = "speeches";
 
     /**
-     * 分片上传文件
+     * 文件上传
+     */
+    public void fileUpload(File file) {
+        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+        if (ossClient.doesBucketExist(bucketName)) {
+            System.out.println("已经创建了bucket: " + bucketName);
+        } else {
+            ossClient.createBucket(bucketName);
+        }
+        // print information from bucket
+        BucketInfo info = ossClient.getBucketInfo(bucketName);
+        System.out.println("Bucket " + bucketName + "的信息如下：");
+        System.out.println("\t数据中心：" + info.getBucket().getLocation());
+        System.out.println("\t创建时间：" + info.getBucket().getCreationDate());
+        System.out.println("\t用户标志：" + info.getBucket().getOwner());
+        OSS oss = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        oss.putObject(bucketName, file.getName(), file);
+        oss.shutdown();
+    }
+
+
+    /**
+     * 分片上传
      */
     public void ossUploadFileService() {
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
