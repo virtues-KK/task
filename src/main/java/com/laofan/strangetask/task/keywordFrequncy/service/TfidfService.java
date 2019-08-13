@@ -1,6 +1,5 @@
 package com.laofan.strangetask.task.keywordFrequncy.service;
 
-import com.huaban.analysis.jieba.JiebaSegmenter;
 import com.laofan.strangetask.task.keywordFrequncy.entity.ArticleKeyword;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Frequency;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Keyword;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;
@@ -27,7 +25,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = {})
 public class TfidfService {
 
     private final FrequencyRepository frequencyRepository;
@@ -61,7 +59,8 @@ public class TfidfService {
         Map<Long, Double> map = new HashMap<>();
         this.prepare();
 
-        for (Long keyword : keywords) {//获取数据库所有文章的词数
+        for (Long keyword : keywords) {
+            //获取数据库所有文章的词数
             long count = frequencies.stream().map(Frequency::getFrequency).reduce(Long::sum).get();
             log.info(count + "词库中文章的总数");
             //该词在文库中的频率
@@ -75,13 +74,6 @@ public class TfidfService {
             //获取if-idf值
             double logs = log * keywordFrequencyInArticle;
             map.put(keyword, logs);
-            //update frequency tf_idfValue
-//            StringBuilder stringBuilder = new StringBuilder();
-//            String sql = "update Frequency set tf_idfValue =";
-//            stringBuilder.append(sql);
-//            stringBuilder.append("?1 where keyword.id = ?2 and article.id = ?3");
-//            entityManager.createQuery(stringBuilder.toString()).setParameter(1, logs).setParameter(2, keyword).setParameter(3, articleId).executeUpdate();
-//            stringBuilder = null;
             frequencyRepository.updateIfidfValue(logs, keyword, articleId);
         }
 
@@ -92,7 +84,6 @@ public class TfidfService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
-//        LinkedHashMap linkedHashMap = this.valueSortMap(map);
         Iterator iterator = linkedHashMap.entrySet().iterator();
         //每次都会删除相关的数据,新增数据
         articleKeywordRepository.deleteByArticleId(articleId);
@@ -120,7 +111,7 @@ public class TfidfService {
 
     /**
      * 获取一个根据value降序排序的map
-     *
+     * 这个排序稍微有点问题，先用stream排序处理了
      * @return
      */
     private LinkedHashMap valueSortMap(Map oldMap) {
@@ -128,13 +119,13 @@ public class TfidfService {
         Collections.sort(list, new Comparator<Map.Entry<Long, Double>>() {
             @Override
             public int compare(Map.Entry<Long, Double> o1, Map.Entry<Long, Double> o2) {
-//                if (o1.getValue() == null && o2.getValue() == null) {
-//                    return 0;
-//                } else if (o1.getValue() == null && o2.getValue() != null) {
-//                    return 1;
-//                } else if (o2.getValue() == null && o1.getValue() != null) {
-//                    return -1;
-//                }
+                if (o1.getValue() == null && o2.getValue() == null) {
+                    return 0;
+                } else if (o1.getValue() == null && o2.getValue() != null) {
+                    return 1;
+                } else if (o2.getValue() == null && o1.getValue() != null) {
+                    return -1;
+                }
                 return (int) (o2.getValue() - o1.getValue());
             }
         });
