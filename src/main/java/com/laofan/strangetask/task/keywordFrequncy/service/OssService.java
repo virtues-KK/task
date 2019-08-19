@@ -6,10 +6,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.*;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.lang.reflect.Field;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,31 +15,40 @@ import java.util.List;
 @Service
 public class OssService {
 
-    private static String endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
+//    private static String endpoint = "http://oss-cn-hangzhou.aliyuncs.com";
+    private static String endpoint = "http://oss-cn-huhehaote.aliyuncs.com";
     private static String accessKeyId = "LTAIzwTbXiWKFq8P";
     private static String accessKeySecret = "1SVb4EvdoCRuiw8dZggZVL2kdKr8KC";
-    private static String bucketName = "speechBucket";
+//    private static String bucketName = "8kt-sp";
+    private static String bucketName = "video-pl";
     private static String firstKey = "my-first-key";
     private static String objectName = "speeches";
 
     /**
      * 文件上传
      */
-    public void fileUpload(File file) {
-        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-        if (ossClient.doesBucketExist(bucketName)) {
+    public void fileUpload(String files) throws FileNotFoundException {
+        OSS oss = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        if (oss.doesBucketExist(bucketName)) {
             System.out.println("已经创建了bucket: " + bucketName);
         } else {
-            ossClient.createBucket(bucketName);
+            oss.createBucket(bucketName);
         }
         // print information from bucket
-        BucketInfo info = ossClient.getBucketInfo(bucketName);
+        BucketInfo info = oss.getBucketInfo(bucketName);
         System.out.println("Bucket " + bucketName + "的信息如下：");
         System.out.println("\t数据中心：" + info.getBucket().getLocation());
         System.out.println("\t创建时间：" + info.getBucket().getCreationDate());
         System.out.println("\t用户标志：" + info.getBucket().getOwner());
-        OSS oss = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
-        oss.putObject(bucketName, file.getName(), file);
+        File[] fs = new File(files).listFiles();
+        for (int i = 0; i < fs.length; i++) {
+            try{
+                oss.putObject(bucketName, fs[i].getName(), fs[i]);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         oss.shutdown();
     }
 
@@ -53,17 +59,17 @@ public class OssService {
     public void ossUploadFileService() {
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
-            if (ossClient.doesBucketExist(bucketName)) {
-                System.out.println("已经创建了bucket: " + bucketName);
-            } else {
-                ossClient.createBucket(bucketName);
-            }
-            // print information from bucket
-            BucketInfo info = ossClient.getBucketInfo(bucketName);
-            System.out.println("Bucket " + bucketName + "的信息如下：");
-            System.out.println("\t数据中心：" + info.getBucket().getLocation());
-            System.out.println("\t创建时间：" + info.getBucket().getCreationDate());
-            System.out.println("\t用户标志：" + info.getBucket().getOwner());
+//            if (ossClient.doesBucketExist(bucketName)) {
+//                System.out.println("已经创建了bucket: " + bucketName);
+//            } else {
+//                ossClient.createBucket(bucketName);
+//            }
+//            // print information from bucket
+//            BucketInfo info = ossClient.getBucketInfo(bucketName);
+//            System.out.println("Bucket " + bucketName + "的信息如下：");
+//            System.out.println("\t数据中心：" + info.getBucket().getLocation());
+//            System.out.println("\t创建时间：" + info.getBucket().getCreationDate());
+//            System.out.println("\t用户标志：" + info.getBucket().getOwner());
             //分片上传文件
             InitiateMultipartUploadRequest request = new InitiateMultipartUploadRequest(bucketName, objectName);
             InitiateMultipartUploadResult result = ossClient.initiateMultipartUpload(request);

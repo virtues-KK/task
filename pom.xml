@@ -56,11 +56,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>3.5.0</version>
-        </dependency>
-        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
@@ -98,7 +93,13 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>3.7.1</version>
+            <version>3.5.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.axet/jssrc -->
+        <dependency>
+            <groupId>com.github.axet</groupId>
+            <artifactId>jssrc</artifactId>
+            <version>1.0.2-2</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

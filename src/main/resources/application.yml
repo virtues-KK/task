@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/article?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://192.168.1.142:3306/article?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
-    password: rootroot
+    password: root
   jpa:
     hibernate:
       ddl-auto: update

@@ -8,12 +8,13 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
  * @author panyue
  */
-@Service
+@NoArgsConstructor
 public class AliYunSpeechToWord {
     // 地域ID，常量内容，请勿改变
     public static final String REGIONID = "cn-shanghai";
@@ -26,7 +27,7 @@ public class AliYunSpeechToWord {
     /**
      * 请求参数key
      */
-    public static final String KEY_APP_KEY = "mElJH70O6zjh7tbC";
+    public static final String KEY_APP_KEY = "appkey";
     public static final String KEY_FILE_LINK = "file_link";
     public static final String KEY_VERSION = "version";
     public static final String KEY_ENABLE_WORDS = "enable_words";
