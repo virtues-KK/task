@@ -101,6 +101,13 @@
             <artifactId>jssrc</artifactId>
             <version>1.0.2-2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.bytedeco/javacv -->
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>javacv</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>

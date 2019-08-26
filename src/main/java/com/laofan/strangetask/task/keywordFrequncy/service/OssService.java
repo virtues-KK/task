@@ -51,6 +51,19 @@ public class OssService {
         }
         oss.shutdown();
     }
+    /**
+     * 获取当前bucket下所有的文件
+     */
+    public String getAllFileName(){
+        OSS oss = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        if (oss.doesBucketExist(bucketName)) {
+            System.out.println("已经创建了bucket: " + bucketName);
+        } else {
+            oss.createBucket(bucketName);
+        }
+        oss.getBucketAcl()
+        return null;
+    }
 
 
     /**
