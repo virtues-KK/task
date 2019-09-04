@@ -8,6 +8,8 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +61,7 @@ public class AliYunSpeechToWord {
         DefaultProfile profile = DefaultProfile.getProfile(REGIONID, accessKeyId, accessKeySecret);
         this.client = new DefaultAcsClient(profile);
     }
-    public String submitFileTransRequest(String appKey, String fileLink) {
+    public SpeechBean submitFileTransRequest(String appKey, String fileLink) {
         /**
          * 1. 创建CommonRequest 设置请求参数
          */
@@ -94,12 +96,15 @@ public class AliYunSpeechToWord {
          * 3. 提交录音文件识别请求，获取录音文件识别请求任务的ID，以供识别结果查询使用
          */
         String taskId = null;
+        String statusText = null;
+        String statusCode = null;
         try {
             CommonResponse postResponse = client.getCommonResponse(postRequest);
             System.err.println("提交录音文件识别请求的响应：" + postResponse.getData());
             if (postResponse.getHttpStatus() == 200) {
                 JSONObject result = JSONObject.parseObject(postResponse.getData());
-                String statusText = result.getString(KEY_STATUS_TEXT);
+                statusText = result.getString(KEY_STATUS_TEXT);
+                statusCode = result.getString("StatusCode");
                 if (statusText.equals(STATUS_SUCCESS)) {
                     taskId = result.getString(KEY_TASK_ID);
                 }
@@ -107,7 +112,7 @@ public class AliYunSpeechToWord {
         } catch (ClientException e) {
             e.printStackTrace();
         }
-        return taskId;
+        return new SpeechBean(taskId,statusCode,statusText);
     }
     public String getFileTransResult(String taskId) {
         /**
@@ -167,7 +172,7 @@ public class AliYunSpeechToWord {
         String fileLink = "https://aliyun-nls.oss-cn-hangzhou.aliyuncs.com/asr/fileASR/examples/nls-sample-16k.wav";
         AliYunSpeechToWord demo = new AliYunSpeechToWord(accessKeyId, accessKeySecret);
         // 第一步：提交录音文件识别请求，获取任务ID用于后续的识别结果轮询
-        String taskId = demo.submitFileTransRequest(appKey, fileLink);
+        String taskId = demo.submitFileTransRequest(appKey, fileLink).getTaskId();
         if (taskId != null) {
             System.out.println("录音文件识别请求成功，task_id: " + taskId);
         }
@@ -184,6 +189,18 @@ public class AliYunSpeechToWord {
             System.out.println("录音文件识别结果查询失败！");
         }
     }
+}
+
+/**
+ * 录音文件识别返回bean
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class SpeechBean{
+    String taskId;
+    String statusCode;
+    String statusText;
 }
 
 

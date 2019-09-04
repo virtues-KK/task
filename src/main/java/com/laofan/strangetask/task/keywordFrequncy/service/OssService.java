@@ -7,6 +7,7 @@ import com.aliyun.oss.model.*;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,17 +52,27 @@ public class OssService {
         }
         oss.shutdown();
     }
+
+    public static void main(String[] args) {
+        String gbk = null;
+        try {
+            gbk = URLEncoder.encode("第一章第一节 信赖的美国邻居, 不爱抱孩子", "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println(gbk);
+    }
     /**
      * 获取当前bucket下所有的文件
      */
     public String getAllFileName(){
         OSS oss = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+        OSSClient client = new OSSClient(endpoint,accessKeyId,accessKeySecret);
         if (oss.doesBucketExist(bucketName)) {
             System.out.println("已经创建了bucket: " + bucketName);
         } else {
             oss.createBucket(bucketName);
         }
-        oss.getBucketAcl()
         return null;
     }
 

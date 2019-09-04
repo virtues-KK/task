@@ -9,3 +9,12 @@ spring:
     properties:
       hibernate:
         show_sql: true
+aliyun:
+  parameter:
+    - LTAICzLVPlryaIad,jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY,mElJH70O6zjh7tbC
+    - LTAIdE6AWydq3Ibs,rlgvzy9EYb6MH9BNnRdZFTS3jo1MQn,odweG1CiXlO8l7a0
+    - LTAI4Fx4iwndSX3WSs7YAT77,FwZ1qNSktL2QxxF5yotBmTDSQULZvW,dYnOfxT9FxQVpQUz
+#  parameter: appId, appKey
+#  accessKeyId+","+accessKeySecret+","+appKey
+#  'LTAICzLVPlryaIad,jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY,mElJH70O6zjh7tbC'
+#  'LTAIdE6AWydq3Ibs,rlgvzy9EYb6MH9BNnRdZFTS3jo1MQn,odweG1CiXlO8l7a0'
