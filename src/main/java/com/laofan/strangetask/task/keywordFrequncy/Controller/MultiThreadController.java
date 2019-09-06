@@ -2,7 +2,6 @@ package com.laofan.strangetask.task.keywordFrequncy.Controller;
 
 import com.laofan.strangetask.task.keywordFrequncy.service.MultiThreadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +23,7 @@ public class MultiThreadController {
     @GetMapping("multiTest")
     public void multiThreadTest(){
         List<String> list = multiThreadService.initMap();
-        ConcurrentHashMap<String, String> stringStringConcurrentHashMap = multiThreadService.initConcurrentHashMap(list);
+        ConcurrentHashMap<String, String> stringStringConcurrentHashMap = multiThreadService.initMap(list);
         stringStringConcurrentHashMap.forEach((k,v) ->{
             String[] strings = v.split(",");
             multiThreadService.getFileTransResult(k,strings[0],strings[1],strings[2]);

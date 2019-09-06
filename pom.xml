@@ -123,6 +123,13 @@
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>3.5.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/it.sauronsoftware/jave -->
+        <dependency>
+            <groupId>it.sauronsoftware</groupId>
+            <artifactId>jave</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

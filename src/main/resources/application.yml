@@ -11,10 +11,18 @@ spring:
         show_sql: true
 aliyun:
   parameter:
+#    最帅的我
     - LTAICzLVPlryaIad,jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY,mElJH70O6zjh7tbC
+#    老范
     - LTAIdE6AWydq3Ibs,rlgvzy9EYb6MH9BNnRdZFTS3jo1MQn,odweG1CiXlO8l7a0
+#    end
     - LTAI4Fx4iwndSX3WSs7YAT77,FwZ1qNSktL2QxxF5yotBmTDSQULZvW,dYnOfxT9FxQVpQUz
-#  parameter: appId, appKey
+#    林道璇
+    - LTAI4FjmPiDy39Q4qP9RHQcP，NxUyQRBOtCRtnNFbIj1NPMtW9t3WFO，2qbmKl2Zqmzfeow5
+#    晓峰
+    - LTAI4FkAJGxMzg9c6VPQNAhb，eoDwkWAuKlysBW7L9YZ8v93EOW9APU，G5Ht4lVVZp2zrR9p
+#    钟远
+    - LTAI4FnPLH38uqifNkaxQA3V，IFe2whkcJvZsfE5StJDxPdCHq5d2lV，XBdje8VnRnCI2a1J
+#    少鹏
+    - LTAI4FurebiMJeDydy7Cj35x,Zn1FfQKimPJLfJK5s8LjmjYX6EOW4a,krYh2uvdNLFbCsL1
 #  accessKeyId+","+accessKeySecret+","+appKey
-#  'LTAICzLVPlryaIad,jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY,mElJH70O6zjh7tbC'
-#  'LTAIdE6AWydq3Ibs,rlgvzy9EYb6MH9BNnRdZFTS3jo1MQn,odweG1CiXlO8l7a0'
