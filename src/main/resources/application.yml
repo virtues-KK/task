@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://192.168.1.142:3306/article?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/article?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
-    password: root
+    password: rootroot
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
@@ -12,18 +12,14 @@ spring:
         show_sql: true
 aliyun:
   parameter:
-#    最帅的我
-    - LTAICzLVPlryaIad,jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY,mElJH70O6zjh7tbC
-#    老范
-    - LTAIdE6AWydq3Ibs,rlgvzy9EYb6MH9BNnRdZFTS3jo1MQn,odweG1CiXlO8l7a0
-#    end
-    - LTAI4Fx4iwndSX3WSs7YAT77,FwZ1qNSktL2QxxF5yotBmTDSQULZvW,dYnOfxT9FxQVpQUz
-#    林道璇
-    - LTAI4FjmPiDy39Q4qP9RHQcP，NxUyQRBOtCRtnNFbIj1NPMtW9t3WFO，2qbmKl2Zqmzfeow5
-#    晓峰
-    - LTAI4FkAJGxMzg9c6VPQNAhb，eoDwkWAuKlysBW7L9YZ8v93EOW9APU，G5Ht4lVVZp2zrR9p
-#    钟远
-    - LTAI4FnPLH38uqifNkaxQA3V，IFe2whkcJvZsfE5StJDxPdCHq5d2lV，XBdje8VnRnCI2a1J
-#    少鹏
-    - LTAI4FurebiMJeDydy7Cj35x,Zn1FfQKimPJLfJK5s8LjmjYX6EOW4a,krYh2uvdNLFbCsL1
-#  accessKeyId+","+accessKeySecret+","+appKey
+    - LTAICzLVPlryaIad,jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY,mElJH70O6zjh7tbC #    最帅的我
+    - LTAIdE6AWydq3Ibs,rlgvzy9EYb6MH9BNnRdZFTS3jo1MQn,odweG1CiXlO8l7a0 #    老范
+    - LTAI4Fx4iwndSX3WSs7YAT77,FwZ1qNSktL2QxxF5yotBmTDSQULZvW,dYnOfxT9FxQVpQUz #    end
+    - LTAI4FjmPiDy39Q4qP9RHQcP，NxUyQRBOtCRtnNFbIj1NPMtW9t3WFO，2qbmKl2Zqmzfeow5 #    林道璇
+    - LTAI4FkAJGxMzg9c6VPQNAhb，eoDwkWAuKlysBW7L9YZ8v93EOW9APU，G5Ht4lVVZp2zrR9p #    晓峰
+    - LTAI4FnPLH38uqifNkaxQA3V，IFe2whkcJvZsfE5StJDxPdCHq5d2lV，XBdje8VnRnCI2a1J #    钟远
+    - LTAI4FurebiMJeDydy7Cj35x,Zn1FfQKimPJLfJK5s8LjmjYX6EOW4a,krYh2uvdNLFbCsL1 #    少鹏
+  #  accessKeyId+","+accessKeySecret+","+appKey
+
+
+

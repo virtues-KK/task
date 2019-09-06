@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laofan.strangetask.task.keywordFrequncy.bean.JsonWords;
+import com.laofan.strangetask.task.keywordFrequncy.bean.SpeechParameterBean;
 import com.laofan.strangetask.task.keywordFrequncy.bean.Words_;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -28,7 +30,6 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-@ConfigurationProperties(prefix ="aliyun")
 @Getter
 @Setter
 public class MultiThreadService {
@@ -41,7 +42,7 @@ public class MultiThreadService {
 
     private List<String> filePaths = new ArrayList<>();
 
-    private String sourceFilePath = "C:\\Users\\sunwukong\\Desktop\\targetSpeech - 副本";
+    private String sourceFilePath = "/Users/panyue/Downloads/aliyunTestFile /Users/panyue/Downloads/aliyunTestFile/第八章第六节\\ 让蔡宁眩晕的美国孩子成年大礼.mp3 ";
 
     /**
      * 需处理的总文件集合
@@ -66,7 +67,7 @@ public class MultiThreadService {
     /**
      * 识别系统参数集合
      */
-    private List<String> parameter = new ArrayList<>();
+    private List<String> parameter = new SpeechParameterBean().getParameter();
 
     private ConcurrentHashMap parameterConcurrentMap = new ConcurrentHashMap();
 
