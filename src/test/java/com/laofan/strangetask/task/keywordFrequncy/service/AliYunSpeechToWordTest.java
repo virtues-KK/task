@@ -49,17 +49,17 @@ public class AliYunSpeechToWordTest {
 //        });
 //    }
 
-    @Test
-    public void getFileTransResult() throws IOException {
-        AliYunSpeechToWord aliYunSpeechToWord = new AliYunSpeechToWord("LTAICzLVPlryaIad", "jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY");
-        String taskId = aliYunSpeechToWord.submitFileTransRequest("mElJH70O6zjh7tbC", filePath);
-        String fileTransResult = aliYunSpeechToWord.getFileTransResult(taskId);
-        log.info(fileTransResult);
-        ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false).configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-        JsonWords jsonWord = objectMapper.readValue(fileTransResult, JsonWords.class);
-        List<String> collect = jsonWord.getWords().stream().map(Words_::getWord).distinct().collect(Collectors.toList());
-        collect.forEach(System.out::print);
-    }
+//    @Test
+//    public void getFileTransResult() throws IOException {
+//        AliYunSpeechToWord aliYunSpeechToWord = new AliYunSpeechToWord("LTAICzLVPlryaIad", "jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY");
+//        String taskId = aliYunSpeechToWord.submitFileTransRequest("mElJH70O6zjh7tbC", filePath);
+//        String fileTransResult = aliYunSpeechToWord.getFileTransResult(taskId);
+//        log.info(fileTransResult);
+//        ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false).configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false).configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+//        JsonWords jsonWord = objectMapper.readValue(fileTransResult, JsonWords.class);
+//        List<String> collect = jsonWord.getWords().stream().map(Words_::getWord).distinct().collect(Collectors.toList());
+//        collect.forEach(System.out::print);
+//    }
 
     @Test
     public void test() throws IOException {

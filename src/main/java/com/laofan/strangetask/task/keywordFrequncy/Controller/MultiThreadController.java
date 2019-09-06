@@ -26,7 +26,7 @@ public class MultiThreadController {
         ConcurrentHashMap<String, String> stringStringConcurrentHashMap = multiThreadService.initMap(list);
         stringStringConcurrentHashMap.forEach((k,v) ->{
             String[] strings = v.split(",");
-            multiThreadService.getFileTransResult(k,strings[0],strings[1],strings[2]);
+            multiThreadService.getFileTransResult();
          });
     }
 }

@@ -80,9 +80,6 @@ public class MultiThreadService {
     }
 
 
-
-
-
     /**
      * 集成service方法
      */
