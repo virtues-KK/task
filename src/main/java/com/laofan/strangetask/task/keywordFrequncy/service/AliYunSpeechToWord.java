@@ -8,6 +8,7 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.laofan.strangetask.task.keywordFrequncy.bean.SpeechBean;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -191,16 +192,5 @@ public class AliYunSpeechToWord {
     }
 }
 
-/**
- * 录音文件识别返回bean
- */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-class SpeechBean{
-    String taskId;
-    String statusCode;
-    String statusText;
-}
 
 
