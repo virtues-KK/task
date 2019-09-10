@@ -73,6 +73,7 @@ public class OssService {
         } else {
             oss.createBucket(bucketName);
         }
+        client.listObjects(bucketName).getObjectSummaries().forEach(System.out::println);
         return null;
     }
 
