@@ -1,6 +1,7 @@
 package com.laofan.strangetask.task.keywordFrequncy.service.MultiThread;
 
-import com.laofan.strangetask.task.keywordFrequncy.bean.SpeechParameterBean;
+import com.laofan.strangetask.task.keywordFrequncy.entity.RehandleFiles;
+import com.laofan.strangetask.task.keywordFrequncy.repository.ReHandleFileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,12 +11,12 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * author:pan le
  * Date:2019/9/9
  * Time:15:07
- * 方法消费方
  */
 @Component
 @Slf4j
@@ -41,22 +42,33 @@ public class Consumer {
     @Value("${aliyun.sourthFilePath}")
     private String sourthFilePath;
 
+    @Value("${aliyun.ossHead}")
+    private String ossHead;
+
+    private final ReHandleFileRepository reHandleFileRepository;
+
     @Autowired
-    public Consumer(Provider provider, MultiTask multiTask) {
+    public Consumer(Provider provider, MultiTask multiTask, ReHandleFileRepository reHandleFileRepository) {
         this.provider = provider;
         this.multiTask = multiTask;
+        this.reHandleFileRepository = reHandleFileRepository;
     }
-
-    Boolean vioceTransction = false;
-
     /**
      * 语音转换
      */
     public void transction(){
+        boolean done = false;
         List<String> list = this.initMap();
+        List<String> collect1 = reHandleFileRepository.findAll().stream().map(RehandleFiles::getRetryFile).collect(Collectors.toList());
+        // 优先处理昨天剩下的文件
+        for (String s : collect1) {
+            Long fileTime = provider.getFileTime(provider.decoder(s));
+            multiTask.getVioceTransction(s, fileTime,true);
+        }
         for (String s : list) {
-            multiTask.getVioceTransction(s);
-            }
+            Long fileTime = provider.getFileTime(provider.decoder(s));
+            multiTask.getVioceTransction(s, fileTime,false);
+        }
     }
 
 
@@ -70,7 +82,7 @@ public class Consumer {
             log.info(file1.getName());
             String name = file1.getName();
             try {
-                String filePath ="https://video-pl.oss-cn-huhehaote.aliyuncs.com/" + URLEncoder.encode(name, "utf-8");
+                String filePath =ossHead + URLEncoder.encode(name, "utf-8");
                 filePaths.add(filePath);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -78,6 +90,4 @@ public class Consumer {
         });
         return filePaths;
     }
-
-
 }

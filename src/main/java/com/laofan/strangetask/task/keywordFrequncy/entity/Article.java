@@ -24,8 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Table(name = "article")
-@ToString(
-        exclude = {"id"})
+@ToString(exclude = {"id"})
 @EntityListeners(value = AuditingEntityListener.class)
 @EnableJpaAuditing
 public class Article {
@@ -49,5 +48,8 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User createUser;
+
+    @Lob
+    private String content;
 
 }

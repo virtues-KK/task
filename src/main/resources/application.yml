@@ -6,17 +6,18 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
 aliyun:
-  sourthFilePath: C:\Users\sunwukong\Desktop\targetSpeech - 副本
+  sourthFilePath: C:\Users\sunwukong\Desktop\targetSpeech - 副本\
+  ossHead: https://video-pl.oss-cn-huhehaote.aliyuncs.com/
   parameter:
     - LTAICzLVPlryaIad,jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY,mElJH70O6zjh7tbC #    最帅的我
     - LTAIdE6AWydq3Ibs,rlgvzy9EYb6MH9BNnRdZFTS3jo1MQn,odweG1CiXlO8l7a0 #    老范
     - LTAI4Fx4iwndSX3WSs7YAT77,FwZ1qNSktL2QxxF5yotBmTDSQULZvW,dYnOfxT9FxQVpQUz #    end
-    - LTAI4FjmPiDy39Q4qP9RHQcP,NxUyQRBOtCRtnNFbIj1NPMtW9t3WFO,2qbmKl2Zqmzfeow5 #    林道璇
+    - LTAI4FjmPiDy39Q4qP9RHQcP,NxUyQRBOtCRtnNFbIj1NPMtW9t3WFO,2qbmKl2Zqmzfeow5 #    傲天
     - LTAI4FkAJGxMzg9c6VPQNAhb,eoDwkWAuKlysBW7L9YZ8v93EOW9APU,G5Ht4lVVZp2zrR9p #    晓峰
     - LTAI4FnPLH38uqifNkaxQA3V,IFe2whkcJvZsfE5StJDxPdCHq5d2lV,XBdje8VnRnCI2a1J #    钟远
     - LTAI4FurebiMJeDydy7Cj35x,Zn1FfQKimPJLfJK5s8LjmjYX6EOW4a,krYh2uvdNLFbCsL1 #    少鹏
