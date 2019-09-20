@@ -5,6 +5,7 @@ import com.laofan.strangetask.task.keywordFrequncy.repository.ReHandleFileReposi
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -56,6 +57,7 @@ public class Consumer {
     /**
      * 语音转换
      */
+    @Scheduled(cron = "0 26 16 * * ?")
     public void transction(){
         boolean done = false;
         List<String> list = this.initMap();
@@ -70,7 +72,6 @@ public class Consumer {
             multiTask.getVioceTransction(s, fileTime,false);
         }
     }
-
 
     /**
      * 初始化oss文件地址

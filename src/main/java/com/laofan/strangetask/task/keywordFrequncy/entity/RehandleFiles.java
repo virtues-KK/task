@@ -26,7 +26,8 @@ public class RehandleFiles {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
-    @Column(unique = true,length = 200,name= "fileName")
+    @Column(unique = true,name= "fileName")
+    @Lob
     private String retryFile;
 
     public static RehandleFiles buildEntity(String reTryFile){

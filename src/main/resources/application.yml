@@ -1,4 +1,8 @@
 spring:
+  data:
+    elasticsearch:
+      cluster-nodes: 127.0.0.1:9300
+      cluster-name: elasticsearch
   datasource:
     url: jdbc:mysql://192.168.1.142:3306/article?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
@@ -6,7 +10,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
@@ -21,7 +25,8 @@ aliyun:
     - LTAI4FkAJGxMzg9c6VPQNAhb,eoDwkWAuKlysBW7L9YZ8v93EOW9APU,G5Ht4lVVZp2zrR9p #    晓峰
     - LTAI4FnPLH38uqifNkaxQA3V,IFe2whkcJvZsfE5StJDxPdCHq5d2lV,XBdje8VnRnCI2a1J #    钟远
     - LTAI4FurebiMJeDydy7Cj35x,Zn1FfQKimPJLfJK5s8LjmjYX6EOW4a,krYh2uvdNLFbCsL1 #    少鹏
-    - LTAIaiQx67nvXNBX,BHFxkFOOn2eFY4TzixRFIaeGx5o5em,XUqeJmFEGGHw8hJ1 #孝一
+    - LTAIaiQx67nvXNBX,BHFxkFOOn2eFY4TzixRFIaeGx5o5em,XUqeJmFEGGHw8hJ1 # 孝一
+    - LTAI4FvkfqwuZEy15Km2thVc,WxhA1e9SObuvRJjSEkyGLr1sLvOFxu,iNnTjUQZZ9X7jEon # 唐培
   #  accessKeyId+","+accessKeySecret+","+appKey
 
 

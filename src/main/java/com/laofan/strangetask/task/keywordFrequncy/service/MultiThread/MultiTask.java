@@ -7,12 +7,9 @@ import com.laofan.strangetask.task.keywordFrequncy.bean.JsonWords;
 import com.laofan.strangetask.task.keywordFrequncy.bean.SpeechBean;
 import com.laofan.strangetask.task.keywordFrequncy.bean.Words_;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Article;
-import com.laofan.strangetask.task.keywordFrequncy.repository.AliyunParameterRepository;
-import com.laofan.strangetask.task.keywordFrequncy.repository.ReHandleFileRepository;
 import com.laofan.strangetask.task.keywordFrequncy.service.AliYunSpeechToWord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
