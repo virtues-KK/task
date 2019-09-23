@@ -7,11 +7,9 @@ import com.aliyun.oss.model.*;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class OssService {
@@ -61,6 +59,20 @@ public class OssService {
             e.printStackTrace();
         }
         System.out.println(gbk);
+        try {
+            String decode = URLDecoder.decode("https://video-pl.oss-cn-huhehaote.aliyuncs.com/%E3%80%8A%20%E7%AC%AC56%E5%8F%B7%E6%95%99%E5%AE%A4%E7%9A%84%E5%A5%87%E8%BF%B9%20%E3%80%8B/%E7%AC%AC56%E5%8F%B7%E6%95%99%E5%AE%A4%E7%9A%84%E5%A5%87%E8%BF%B901.m4a", "UTF-8");
+            System.out.println(decode);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        File file = new File("C:\\Users\\sunwukong\\Desktop\\oss");
+        for (File listFile : Objects.requireNonNull(file.listFiles())) {
+            String name = listFile.getName();
+            for (File file1 : Objects.requireNonNull(listFile.listFiles())) {
+                String name1 = file1.getName();
+                file1.renameTo(new File(file.getAbsolutePath() +"\\"+name+"-"+name1));
+            }
+        }
     }
     /**
      * 获取当前bucket下所有的文件
@@ -149,5 +161,21 @@ public class OssService {
         }
 
     }
+
+    /**
+     * 批量处理文件名
+     */
+    public void resolveFileName(String filePath){
+        File file = new File(filePath);
+        for (File listFile : Objects.requireNonNull(file.listFiles())) {
+            String name = listFile.getName();
+            for (File file1 : Objects.requireNonNull(listFile.listFiles())) {
+                String name1 = file1.getName();
+                file1.renameTo(new File(name+"-"+name1));
+            }
+        }
+
+    }
+
 
 }

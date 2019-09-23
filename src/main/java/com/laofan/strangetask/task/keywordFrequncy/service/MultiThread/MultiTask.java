@@ -46,7 +46,7 @@ public class MultiTask {
     public Future<String> getVioceTransction(String filePath, Long remainTime,boolean add){
         String provide = provider.provide(filePath);
         if (add){
-            provider.completeRetryTable(filePath);
+            add = provider.completeRetryTable(filePath);
         }
         if (provide == null){
             //不能给出适合的账号,结束当前的文件任务,保存文件,只能下次处理
@@ -100,7 +100,6 @@ public class MultiTask {
         }else {
             log.error("保存失败" + content);
         }
-
         return returnBody();
     }
 

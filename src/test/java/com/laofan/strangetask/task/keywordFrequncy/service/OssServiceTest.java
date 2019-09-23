@@ -23,6 +23,6 @@ public class OssServiceTest {
 
     @Test
     public void fileUpload() throws FileNotFoundException {
-        ossService.fileUpload("C:\\Users\\sunwukong\\Desktop\\targetSpeech");
+        ossService.fileUpload("C:\\Users\\sunwukong\\Desktop\\oss_");
     }
 }

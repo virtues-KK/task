@@ -20,31 +20,27 @@ public class FormatFrequencyService {
 
     public static void main(String[] args) throws Exception {
         File f = new File("C:\\Users\\sunwukong\\Desktop\\第八章第六节 让蔡宁眩晕的美国孩子成年大礼.m4a");
-        File out = new File("C:\\Users\\sunwukong\\Desktop\\biggift.m4a");
-        FileInputStream fileInputStream = new FileInputStream(f);
-        FileOutputStream fileOutputStream = new FileOutputStream(out);
-        new SSRC(fileInputStream,fileOutputStream,44100,8000,2,2,1,Integer.MAX_VALUE,0,0,true);
+//        File out = new File("C:\\Users\\sunwukong\\Desktop\\biggift.m4a");
+//        FileInputStream fileInputStream = new FileInputStream(f);
+//        FileOutputStream fileOutputStream = new FileOutputStream(out);
+//        new SSRC(fileInputStream,fileOutputStream,44100,8000,2,2,1,Integer.MAX_VALUE,0,0,true);
 
+        AudioFileFormat audioFileFormat = AudioSystem.getAudioFileFormat(f);
+        AudioFormat format = audioFileFormat.getFormat();
+        float sampleRate = format.getSampleRate();
+        int frameSize = format.getFrameSize();
+        AudioFormat.Encoding encoding = format.getEncoding();
+        int channels = format.getChannels();
+        float frameRate = format.getFrameRate();
+        int sampleSizeInBits = format.getSampleSizeInBits();
+        boolean bigEndian = format.isBigEndian();
+        AudioFormat audioFormat = new AudioFormat(encoding,(float)16000,sampleSizeInBits,channels,frameSize,frameRate,bigEndian);
 
-
-
-
-//        AudioFileFormat audioFileFormat = AudioSystem.getAudioFileFormat(f);
-//        AudioFormat format = audioFileFormat.getFormat();
-//        float sampleRate = format.getSampleRate();
-//        int frameSize = format.getFrameSize();
-//        AudioFormat.Encoding encoding = format.getEncoding();
-//        int channels = format.getChannels();
-//        float frameRate = format.getFrameRate();
-//        int sampleSizeInBits = format.getSampleSizeInBits();
-//        boolean bigEndian = format.isBigEndian();
-//        AudioFormat audioFormat = new AudioFormat(encoding,(float)16000,sampleSizeInBits,channels,frameSize,frameRate,bigEndian);
-//
-//        AudioInputStream audioInputStream = new AudioInputStream(new FileInputStream(f),audioFormat, AudioSystem.getAudioInputStream(f).getFrameLength());
-//        AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE,new File("C:\\Users\\sunwukong\\Desktop\\成年大礼.wav"));
-//        System.out.println(sampleRate);
-//        RandomAccessFile rdf = new RandomAccessFile(f, "rw");
-//        System.out.println("sample rate: " + toInt(read(rdf, 24, 4)));
+        AudioInputStream audioInputStream = new AudioInputStream(new FileInputStream(f),audioFormat, AudioSystem.getAudioInputStream(f).getFrameLength());
+        AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE,new File("C:\\Users\\sunwukong\\Desktop\\成年大礼.wav"));
+        System.out.println(sampleRate);
+        RandomAccessFile rdf = new RandomAccessFile(f, "rw");
+        System.out.println("sample rate: " + toInt(read(rdf, 24, 4)));
 
     }
 

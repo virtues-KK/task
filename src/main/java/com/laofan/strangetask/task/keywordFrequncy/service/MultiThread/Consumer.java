@@ -56,10 +56,12 @@ public class Consumer {
     }
     /**
      * 语音转换
+     * 1,重试文件和第一次文件之间的重复问题
+     * 2,重置账号时长的问题
+     *
      */
     @Scheduled(cron = "0 26 16 * * ?")
     public void transction(){
-        boolean done = false;
         List<String> list = this.initMap();
         List<String> collect1 = reHandleFileRepository.findAll().stream().map(RehandleFiles::getRetryFile).collect(Collectors.toList());
         // 优先处理昨天剩下的文件
@@ -81,13 +83,12 @@ public class Consumer {
         File file = new File(sourthFilePath);
         Arrays.stream(Objects.requireNonNull(file.listFiles())).forEach(file1 -> {
             log.info(file1.getName());
-            String name = file1.getName();
-            try {
-                String filePath =ossHead + URLEncoder.encode(name, "utf-8");
-                filePaths.add(filePath);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+                try {
+                    String filePath =ossHead + URLEncoder.encode(file1.getName(), "utf-8");
+                    filePaths.add(filePath);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
         });
         return filePaths;
     }

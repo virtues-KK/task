@@ -49,6 +49,8 @@ public class Article {
     @JoinColumn(name = "userId")
     private User createUser;
 
+    private String title;
+
     @Lob
     private String content;
 
