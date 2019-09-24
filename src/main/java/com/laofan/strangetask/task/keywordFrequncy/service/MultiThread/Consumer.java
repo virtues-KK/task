@@ -60,7 +60,7 @@ public class Consumer {
      * 2,重置账号时长的问题
      *
      */
-    @Scheduled(cron = "0 26 16 * * ?")
+//    @Scheduled(cron = "0 26 16 * * ?")
     public void transction(){
         List<String> list = this.initMap();
         List<String> collect1 = reHandleFileRepository.findAll().stream().map(RehandleFiles::getRetryFile).collect(Collectors.toList());
