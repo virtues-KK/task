@@ -7,6 +7,7 @@ import com.laofan.strangetask.task.keywordFrequncy.bean.JsonWords;
 import com.laofan.strangetask.task.keywordFrequncy.bean.SpeechBean;
 import com.laofan.strangetask.task.keywordFrequncy.bean.Words_;
 import com.laofan.strangetask.task.keywordFrequncy.entity.Article;
+import com.laofan.strangetask.task.keywordFrequncy.repository.AliyunParameterRepository;
 import com.laofan.strangetask.task.keywordFrequncy.service.AliYunSpeechToWord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.List;
@@ -36,15 +38,26 @@ public class MultiTask {
 
     private final Provider provider;
 
+    private final AliyunParameterRepository aliyunParameterRepository;
+
 
     @Autowired
-    public MultiTask(Provider provider) {
+    public MultiTask(Provider provider, AliyunParameterRepository aliyunParameterRepository) {
         this.provider = provider;
+        this.aliyunParameterRepository = aliyunParameterRepository;
     }
 
     @Async
     public Future<String> getVioceTransction(String filePath, Long remainTime,boolean add){
         String provide = provider.provide(filePath);
+        //get title
+        String title = null;
+        try {
+            title = URLDecoder.decode(filePath, "utf-8").split("/")[3];
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         if (add){
             add = provider.completeRetryTable(filePath);
         }
@@ -67,10 +80,11 @@ public class MultiTask {
         SpeechBean resultBean = aliYunSpeechToWord.submitFileTransRequest(appKey, filePath);
         String statusCode = resultBean.getStatusCode();
         String taskId = resultBean.getTaskId();
-        // 这里的用量耗尽,一般不会出现,因为给出的账号都是有剩余时长的
+        // 这里的用量耗尽,一般不会出现,因为给出的账号都是有剩余时长的,出现了这种情况的话需要把当前账号的时长置为0
         if ("41050001".equals(statusCode)) {
             log.error("用量耗尽" + provide);
             provider.collectFile(filePath);
+            provider.updateTime(7200L,accessKeyId +","+accessKeySecret +","+ appKey);
             return returnBody();
             //出现不可预知异常,保存retry文件即可
         }else if (statusCode.startsWith("4") || statusCode.startsWith("5")) {
@@ -94,7 +108,7 @@ public class MultiTask {
         }
         List<String> collect = jsonWord.getWords().stream().map(Words_::getWord).distinct().collect(Collectors.toList());
         String content = String.join("", collect);
-        Article save = provider.save(content);
+        Article save = provider.save(content,title);
         if (Objects.nonNull(save)){
             log.info("保存成功" + content);
         }else {

@@ -15,7 +15,7 @@ spring:
       hibernate:
         show_sql: true
 aliyun:
-  sourthFilePath: C:\Users\sunwukong\Desktop\oss_
+  sourthFilePath: A:\200G_mp3\
   ossHead: https://video-pl.oss-cn-huhehaote.aliyuncs.com/
   parameter:
     - LTAICzLVPlryaIad,jLUlSxOaWqvNnIkh5aA7l3zPa8lZzY,mElJH70O6zjh7tbC # 最帅的我

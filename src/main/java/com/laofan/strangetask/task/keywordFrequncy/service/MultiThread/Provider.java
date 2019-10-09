@@ -151,7 +151,7 @@ public class Provider {
      * @param remainTime
      * @param parameter
      */
-    @Transactional
+    @Transactional(rollbackFor = NullPointerException.class)
     public void updateTime(Long remainTime,String parameter){
         aliyunParameterRepository.updateRemainTime(parameter,remainTime);
     }
@@ -168,8 +168,8 @@ public class Provider {
     /**
      * save article
      */
-    public Article save(String content){
-        return articleRepository.save(Article.builder().content(content).build());
+    public Article save(String content,String title){
+        return articleRepository.save(Article.builder().content(content).title(title).build());
     }
 
 

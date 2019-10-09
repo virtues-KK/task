@@ -19,4 +19,8 @@ public interface AliyunParameterRepository extends JpaRepository<AliyunParameter
     @Modifying
     @Query(value = "UPDATE parameter as a SET remain_time = (a.remain_time - ?2) where a.parameter =?1 ",nativeQuery = true)
     void updateRemainTime(String parameter,Long time);
+
+    @Modifying
+    @Query("update AliyunParameterEntity as a set a.remainTime = 7200")
+    void recoverTime();
 }

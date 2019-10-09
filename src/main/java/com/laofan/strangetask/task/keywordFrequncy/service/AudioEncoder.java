@@ -11,8 +11,13 @@ import org.omg.IOP.Codec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * author:pan le
@@ -62,13 +67,21 @@ public class AudioEncoder {
         }
     }
 
-    public void convert() {
-        String filePath = "C:\\Users\\sunwukong\\Desktop\\200G_MP3";
-        File sourceFile = new File("C:\\Users\\sunwukong\\Desktop\\200G");
+    public String convert() {
+        String filePath = "C:\\Users\\sunwukong\\Desktop\\188G";
+        List<File> targetFileList = new ArrayList<>();
+        Arrays.stream(Objects.requireNonNull(new File(filePath).listFiles())).forEach(file -> {
+            targetFileList.addAll(Arrays.asList(Objects.requireNonNull(file.listFiles())));
+        });
+        File sourceFile = new File("D:\\elseFile250G");
         for (File file : Objects.requireNonNull(sourceFile.listFiles())) {
             log.info("任务进度" + file.getName());
             for (File listFile : Objects.requireNonNull(file.listFiles())) {
                 File targetFile = new File(filePath + "\\" + file.getName() + "\\" + listFile.getName().replaceAll("m4a", "mp3"));
+                if (targetFileList.contains(targetFile)){
+                    log.info("跳过已有文件");
+                    continue;
+                }
                 try {
                     encodingAttributes.setFormat("mp3");
                     attributes.setCodec("libmp3lame");
@@ -82,5 +95,6 @@ public class AudioEncoder {
                 }
             }
         }
+        return "finish";
     }
 }

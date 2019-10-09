@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.FileNotFoundException;
+
 import static org.junit.Assert.*;
 
 @SpringBootTest
@@ -17,10 +19,13 @@ public class AudioEncoderTest {
     private AudioEncoder audioEncoder;
 
     @Autowired
+    private OssService ossService;
+
+    @Autowired
     private ConvertFailedRepository convertFailedRepository;
 
     @Test
-    public void convert() {
-        audioEncoder.convert();
+    public void convert() throws FileNotFoundException {
+        String convert = audioEncoder.convert();
     }
 }

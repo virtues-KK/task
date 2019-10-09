@@ -42,7 +42,7 @@ public class OssService {
         File[] fs = new File(files).listFiles();
         for (int i = 0; i < fs.length; i++) {
             try{
-                oss.putObject(bucketName, fs[i].getName(), fs[i]);
+                oss.putObject(bucketName, new File(files).getName()+"/"+fs[i].getName(), fs[i]);
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -60,19 +60,19 @@ public class OssService {
         }
         System.out.println(gbk);
         try {
-            String decode = URLDecoder.decode("https://video-pl.oss-cn-huhehaote.aliyuncs.com/%E3%80%8A%20%E7%AC%AC56%E5%8F%B7%E6%95%99%E5%AE%A4%E7%9A%84%E5%A5%87%E8%BF%B9%20%E3%80%8B/%E7%AC%AC56%E5%8F%B7%E6%95%99%E5%AE%A4%E7%9A%84%E5%A5%87%E8%BF%B901.m4a", "UTF-8");
+            String decode = URLDecoder.decode("https://video-pl.oss-cn-huhehaote.aliyuncs.com/0-18%E5%B2%81%E5%AD%A9%E5%AD%90%E6%89%80%E9%9C%80%E5%BF%83%E7%90%86%E8%90%A5%E5%85%BB/%E5%A5%B3%E5%84%BF%E8%B7%9F%E7%88%B8%E7%88%B8%E6%92%92%E5%A8%87%EF%BC%8C%E4%BD%A0%E5%90%AC%E6%87%82%E4%BA%86%E5%90%97%EF%BC%9F.mp3", "UTF-8");
             System.out.println(decode);
         }catch (Exception e){
             e.printStackTrace();
         }
-        File file = new File("C:\\Users\\sunwukong\\Desktop\\oss");
-        for (File listFile : Objects.requireNonNull(file.listFiles())) {
-            String name = listFile.getName();
-            for (File file1 : Objects.requireNonNull(listFile.listFiles())) {
-                String name1 = file1.getName();
-                file1.renameTo(new File(file.getAbsolutePath() +"\\"+name+"-"+name1));
-            }
-        }
+//        File file = new File("C:\\Users\\sunwukong\\Desktop\\oss");
+//        for (File listFile : Objects.requireNonNull(file.listFiles())) {
+//            String name = listFile.getName();
+//            for (File file1 : Objects.requireNonNull(listFile.listFiles())) {
+//                String name1 = file1.getName();
+//                file1.renameTo(new File(file.getAbsolutePath() +"\\"+name+"-"+name1));
+//            }
+//        }
     }
     /**
      * 获取当前bucket下所有的文件
@@ -165,17 +165,14 @@ public class OssService {
     /**
      * 批量处理文件名
      */
-    public void resolveFileName(String filePath){
+    public void resolveFileName(String filePath) {
         File file = new File(filePath);
         for (File listFile : Objects.requireNonNull(file.listFiles())) {
             String name = listFile.getName();
             for (File file1 : Objects.requireNonNull(listFile.listFiles())) {
                 String name1 = file1.getName();
-                file1.renameTo(new File(name+"-"+name1));
+                file1.renameTo(new File(name + "-" + name1));
             }
         }
 
-    }
-
-
-}
+    }}

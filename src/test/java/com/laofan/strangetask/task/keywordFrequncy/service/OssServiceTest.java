@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -21,8 +22,12 @@ public class OssServiceTest {
     @Autowired
     private OssService ossService;
 
+    private String Files = "C:\\Users\\sunwukong\\Desktop\\188G";
+
     @Test
     public void fileUpload() throws FileNotFoundException {
-        ossService.fileUpload("C:\\Users\\sunwukong\\Desktop\\oss_");
+        for (File file : Objects.requireNonNull(new File(Files).listFiles())) {
+            ossService.fileUpload(file.getPath());
+        }
     }
 }
